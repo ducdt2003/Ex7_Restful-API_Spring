@@ -22,6 +22,7 @@ public class Category {
 
     private String name;
 
+//    cascade = CascadeType.ALL
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
