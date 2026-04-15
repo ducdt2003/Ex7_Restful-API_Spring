@@ -2,13 +2,17 @@ package com.example.Ex7_Restful.API_Spring;
 
 import com.example.Ex7_Restful.API_Spring.entity.Category;
 import com.example.Ex7_Restful.API_Spring.entity.Product;
+import com.example.Ex7_Restful.API_Spring.entity.User;
+import com.example.Ex7_Restful.API_Spring.model.enum1.Role;
 import com.example.Ex7_Restful.API_Spring.repository.CategoryRepository;
 import com.example.Ex7_Restful.API_Spring.repository.ProductRepository;
+import com.example.Ex7_Restful.API_Spring.repository.UserRepository;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +26,12 @@ class Ex7RestfulApiSpringApplicationTests {
 
 	@Autowired
 	private CategoryRepository categoryRepo;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	private final Faker faker = new Faker(new Locale("vi"));
 	private final Random random = new Random();
@@ -68,5 +78,20 @@ class Ex7RestfulApiSpringApplicationTests {
 		}
 
 		System.out.println("Seed Product thành công!");
+	}
+
+	@Test
+	void generateUsers() {
+		Faker faker = new Faker();
+		for (int i = 0; i < 10; i++) {
+			User user = new User();
+			user.setUsername(faker.name().username());
+			String rawPassword = "123";
+			user.setRole(Role.USER);
+			user.setPassword(passwordEncoder.encode(rawPassword));
+			userRepository.save(user);
+		}
+
+		System.out.println("Seed user thành công!");
 	}
 }
