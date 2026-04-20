@@ -3,3 +3,9 @@
 #    user:
 #      name: admin
 #      password: admin123
+
+jwt:
+  secret: mysecretkeymysecretkeymysecretkey12345
+  expiration: 604800000
+
+#  604800000

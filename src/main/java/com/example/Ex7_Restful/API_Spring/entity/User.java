@@ -20,6 +20,6 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    @Column(nullable = false)
-    private Integer tokenVersion = 0;
+//    @Column(nullable = false)
+//    private Integer tokenVersion = 0;
 }

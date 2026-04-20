@@ -1,9 +1,11 @@
 package com.example.Ex7_Restful.API_Spring.controller;
 
+import com.example.Ex7_Restful.API_Spring.dto.response.AuthResponse;
 import com.example.Ex7_Restful.API_Spring.entity.User;
 import com.example.Ex7_Restful.API_Spring.repository.UserRepository;
 import com.example.Ex7_Restful.API_Spring.service.auth.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,16 +23,17 @@ public class AuthController {
     private final UserRepository userRepository;
 
     @PostMapping("/login")
-    public String login(@RequestParam String username,
-                        @RequestParam String password) {
+    public ResponseEntity<AuthResponse> login(@RequestParam String username,
+                                              @RequestParam String password) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );
         User user = userRepository.findByUsername(username)
                 .orElseThrow();
 
-        user.setTokenVersion(user.getTokenVersion() + 1);
+        String jwtToken = jwtService.generateToken(user);
+
         userRepository.save(user);
-        return jwtService.generateToken(user);
+        return ResponseEntity.ok(new AuthResponse(jwtToken));
     }
 }
