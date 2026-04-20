@@ -6,6 +6,6 @@
 
 jwt:
   secret: mysecretkeymysecretkeymysecretkey12345
-  expiration: 604800000
+  expiration: 30000
 
 #  604800000
